@@ -77,14 +77,14 @@ function App() {
     <>
       <Router>
       {/* to probs basically commonet h... aur us component ke andar jo variable h jisko tum yahan se hi change kar sakte ho */}
-        <Navbar title="Textutils" Sachaie="About" mode={mode} togglemode={togglemode} />
+        <Navbar title="Textutils" Sachaie="About" mode={mode} tggmode={togglemode} />
         <Alert Alert={alert} />
         <div className="container my-3">
           
-          <Routes>
             {/* we should always use exact with path.... koin ki aishe likhne se react exaxt matching karega */}
-          <Route exact path="/About" element={< About mode = {mode} />}>
-            {/* <About/> */}
+          <Routes>
+          <Route exact path="/About" 
+          element={< About mode = {mode} />}>
           </Route>
             <Route exact path="/"
               element={<Textform showAlert={showAlert} Heading="Enter the Text to analyze below" mode={mode} />}>

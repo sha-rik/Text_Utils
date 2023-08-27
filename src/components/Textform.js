@@ -3,10 +3,66 @@ import React, {useState} from 'react'
 // aur uske andar hamne set_text (variable) use kiya jisse ham state ka content jo phele Enter text here blah blah
 // usko change karcdenge...(You have clicked on the button) se
 export default function Textform(props) {
+    
+    const [text,set_text] = useState('Enter text here blah blah');
+    const [isItalic, setIsItalic] = useState(false);
+    const [isbold,setbold]=useState(false);
+    const [isunderline,setUnderline]=useState(false);
+    // const [modifiedText, setModifiedText] = useState('');
+
+    const handleLoClick = () => {
+        let newtext= text.toLowerCase();
+        set_text(newtext);
+
+        props.showAlert("Converted to lowercase", "success")
+    }
+    const handleItalicClick = () => {
+        setIsItalic(!isItalic);
+        props.showAlert("Converted to italic", "success");
+    };
+    const handleBoldClick = () => {
+        setbold(!isbold);
+        props.showAlert("Converted to bold", "success");
+    };
+    const handleunderlineClick = () => {
+        setUnderline(!isunderline);
+        props.showAlert("Converted to underline", "success");
+    };
+
+    const Copy_text = () => {
+        // text copy
+        let t = document.getElementById("mybox");
+        // t.select se sara text select ho jata h
+        t.select();
+        navigator.clipboard.writeText(t.value);
+        // text copy karne ke baad ham chahte h ki text select na rahe...
+        // to ham usko remove kar denge.. whit the help of below line
+        document.getSelection().removeAllRanges();
+        props.showAlert("Text copied to clipboard", "success")
+    }
+
+    const Remove = () => {
+        // ek ya ek se zayada spaces h to usko ham split kar dengen... aur unka array bana denge
+        let newtext = text.split(/[ ]+/);
+        // fir ham un sare array ko join  kar denge with only single space
+        set_text(newtext.join(" "))
+    }
+    // const HandleCapChange = (event) => {
+    //     const inputText = event.target.value;
+    //     const modified = capitalizeAfterFullStop(inputText);
+    //     set_text(inputText);
+    //     setModifiedText(modified);
+    // };
+    // const capitalizeAfterFullStop = (text) => {
+    //     const sentences = text.split('. ');
+    //     const modifiedSentences = sentences.map((sentence) => {
+    //         return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+    //     });
+    //     return modifiedSentences.join('. ');
+    // };
+
 
     // we have made a state for toggling the color of the page
-
-
     // const [mystyle,setmystyle] = useState({
     //     color : 'black',
     //     backgroundColor : 'white',
@@ -73,13 +129,7 @@ export default function Textform(props) {
     }
 
 
-    // ab hamloog ek aur function banayenge... jo ki lowercase me convert karega
-    const handleLoClick = () => {
-        let newtext= text.toLowerCase();
-        set_text(newtext);
-
-        props.showAlert("Converted to lowercase", "success")
-    }
+    
     // how to control speed of reading
     // https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance
     const speak = () => {
@@ -91,7 +141,7 @@ export default function Textform(props) {
         // for output voice
         window.speechSynthesis.speak(msg);
         props.showAlert("Bool basanti", "success")
-
+        
     }
     // add a pause button
     // https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/pause
@@ -107,33 +157,14 @@ export default function Textform(props) {
         window.speechSynthesis.cancel();
         props.showAlert("Chup ,Bilkul chup", "success")
     }
-
+    
     //counting the number of vowels
     // https://stackoverflow.com/questions/29451507/counting-the-number-of-vowels-in-a-string-with-javascript
-
+    
     // ye state h... iske bare me abhi jaya kuch samajh snahi aaya .... so baad me dekhte h
     // state ek aisha vairable jisko react automatically watch karega... iska kafi faida hoga aage...
+    
 
-    const [text,set_text] = useState('Enter text here blah blah');
-
-    const Copy_text = () => {
-        // text copy
-        let t = document.getElementById("mybox");
-        // t.select se sara text select ho jata h
-        t.select();
-        navigator.clipboard.writeText(t.value);
-        // text copy karne ke baad ham chahte h ki text select na rahe...
-        // to ham usko remove kar denge.. whit the help of below line
-        document.getSelection().removeAllRanges();
-        props.showAlert("Text copied to clipboard", "success")
-    }
-
-    const Remove = () => {
-        // ek ya ek se zayada spaces h to usko ham split kar dengen... aur unka array bana denge
-        let newtext = text.split(/[ ]+/);
-        // fir ham un sare array ko join  kar denge with only single space
-        set_text(newtext.join(" "))
-    }
 
     return (
         <>
@@ -142,26 +173,36 @@ export default function Textform(props) {
             <div className="mb-3">
                 {/* jab bhi kuch change karoge text ke area me to... HandleOnChange function call hoga */}
                 <textarea className="form-control" value ={text} onChange={HandleOnChange} 
-                style={{backgroundColor : props.mode==='dark'?'#1652a3':'white',color : props.mode==='dark' ? 'white' : 'black'}}    id="mybox" rows="8"></textarea>
+                style={{
+                    backgroundColor : props.mode==='dark'?'#1652a3':'white',
+                    color : props.mode==='dark' ? 'white' : 'black',
+                    fontStyle: isItalic ? 'italic' : 'normal',
+                    textDecoration: isunderline ? 'underline' : 'none',
+                    fontWeight: isbold ? 'bold' : 'normal',
+                    }}    id="mybox" rows="8"></textarea>
             </div>
             {/* we had made a button to change the input to upper case */}
             <button disabled ={text.length===0} className="btn btn-outline-primary my-3 mx-2" onClick={handleuUpClick} >Convert to uppercase</button>
             {/* Now we will make a button to change i/p to lowercase */}
             {/* outline hatane ke liye btn btn-success/primary/danger lihko sirf */}
-            <buttom disabled={text.length===0} className="btn btn-outline-danger my-3 mx-2" onClick={handleLoClick}>Convert to lowercase</buttom>
+            <button disabled={text.length===0} className="btn btn-outline-primary my-3 mx-2" onClick={handleLoClick}>Convert to lowercase</button>
+            <button disabled={text.length===0} className="btn btn-outline-primary my-3 mx-2" onClick={handleItalicClick}>Convert to Italic</button>
+            <button disabled={text.length===0} className="btn btn-outline-primary my-3 mx-2" onClick={handleBoldClick}>Convert to Bold</button>
+            <button disabled={text.length===0} className="btn btn-outline-primary my-3 mx-2" onClick={handleunderlineClick}>Underline Text</button>
+            {/* <button disabled={text.length===0} className="btn btn-outline-primary my-3 mx-2" onClick={HandleCapChange}>Captalized</button> */}
 
             {/* speaking button */}
-            <buttom disabled={text.length===0} className="btn btn-outline-warning my-3 mx-2" onClick={speak}>Screen reader</buttom>
+            <button disabled={text.length===0} className="btn btn-outline-primary my-3 mx-2" onClick={speak}>Screen reader</button>
             {/* pause button */}
-            <buttom disabled={text.length===0} className="btn btn-outline-warning my-3 mx-2" onClick={pause}>Pause</buttom>
+            <button disabled={text.length===0} className="btn btn-outline-primary my-3 mx-2" onClick={pause}>Pause</button>
             {/* resume button */}
-            <buttom disabled={text.length===0} className="btn btn-outline-warning my-3 mx-2" onClick={resume}>Resume</buttom>
+            <button disabled={text.length===0} className="btn btn-outline-primary my-3 mx-2" onClick={resume}>Resume</button>
             {/* stoping */}
-            <buttom disabled={text.length===0} className="btn btn-outline-info my-3 mx-2" onClick={stop}>stoping</buttom>
+            <button disabled={text.length===0} className="btn btn-outline-primary my-3 mx-2" onClick={stop}>stoping</button>
             {/* copying button */}
-            <button disabled={text.length===0} className="btn btn-outline-danger my-3 mx-2" onClick={Copy_text}>Copy Text </button>
+            <button disabled={text.length===0} className="btn btn-outline-primary my-3 mx-2" onClick={Copy_text}>Copy Text </button>
             {/* Removing extra spaces */}
-            <button disabled={text.length===0} className="btn btn-outline-danger my-3 mx-2" onClick={Remove}>Remove Extra spaces</button>
+            <button disabled={text.length===0} className="btn btn-outline-primary my-3 mx-2" onClick={Remove}>Remove Extra spaces</button>
         </div>
 
         <div className="container" style={{color : props.mode==='dark' ? 'white' : 'black'}}>

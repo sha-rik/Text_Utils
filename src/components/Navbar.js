@@ -19,14 +19,14 @@ export default function Navbar(ek_variable_ka_naam) {
           {/* jo kuch bhi ek_variable_ka_naam . kar ke lihka rahe ho usko {} iske andar likho... kion ki ye JS ka part h */}
 
           <Link className="navbar-brand" to="/">{ek_variable_ka_naam.title}</Link>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="/navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
 
-                {/* yahan hamne link aur to use liya h... by replacing <a> and herf tags */}
+                {/* yahan hamne link aur to use kiya h... by replacing <a> and herf tags */}
                 {/* use "L" not "l" */}
                 <Link className="nav-link active" aria-current="page" to="/">Home</Link>
               </li>
@@ -44,7 +44,7 @@ export default function Navbar(ek_variable_ka_naam) {
             {/* `` <---- ye laga ke ham koi bhi templete lihk sakte h */}
             {/*  aur fir hamne andar me ternary operator use kiya h */}
             <div className={`form-check form-switch text-${ek_variable_ka_naam.mode ==='light' ?'dark': 'light'}`}>
-                <input className="form-check-input" onClick={ek_variable_ka_naam.togglemode}  type="checkbox" role="switch" id="flexSwitchCheckDefault"/>
+                <input className="form-check-input" onClick={ek_variable_ka_naam.tggmode}  type="checkbox" role="switch" id="flexSwitchCheckDefault"/>
                 <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Enable Dark mode</label>
             </div>
           </div>
